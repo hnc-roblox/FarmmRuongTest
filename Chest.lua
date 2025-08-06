@@ -1,3 +1,72 @@
+task.wait(0)
+-- 🚀 FIX LAG MAX LEVEL - TỰ ĐỘNG CHẠY - KHÔNG XOÁ TÓC/PJ 🚀
+pcall(function()
+    local Lighting = game:GetService("Lighting")
+    local Terrain = workspace:FindFirstChildOfClass("Terrain")
+
+    -- Xoá toàn bộ hiệu ứng ánh sáng
+    for _,v in ipairs(Lighting:GetChildren()) do
+        if v:IsA("BloomEffect") or v:IsA("BlurEffect") or v:IsA("SunRaysEffect")
+        or v:IsA("ColorCorrectionEffect") or v:IsA("DepthOfFieldEffect") then
+            v:Destroy()
+        end
+    end
+
+    -- Xoá sương mù & Atmosphere
+    Lighting.FogStart = 1e10
+    Lighting.FogEnd = 1e10
+    local atm = Lighting:FindFirstChildWhichIsA("Atmosphere")
+    if atm then atm:Destroy() end
+
+    -- Giảm toàn bộ ánh sáng
+    Lighting.GlobalShadows = false
+    Lighting.Brightness = 1
+    Lighting.ClockTime = 12
+
+    -- Làm phẳng Terrain
+    if Terrain then
+        Terrain.WaterWaveSize = 0
+        Terrain.WaterWaveSpeed = 0
+        Terrain.WaterReflectance = 0
+        Terrain.WaterTransparency = 1
+    end
+
+    -- Tắt cực mạnh: hiệu ứng, mesh, texture, decal, beam, shimmer, trails...
+    for _,v in ipairs(game:GetDescendants()) do
+        if v:IsA("ParticleEmitter") or v:IsA("Trail") or v:IsA("Fire")
+        or v:IsA("Smoke") or v:IsA("Explosion") or v:IsA("Beam")
+        or v:IsA("ShimmerEffect") or v:IsA("Sparkles") then
+            v:Destroy()
+        elseif v:IsA("Decal") then
+            v.Transparency = 1
+        elseif v:IsA("SurfaceAppearance") or v:IsA("Texture") then
+            v:Destroy()
+        elseif v:IsA("MeshPart") then
+            v.TextureID = ""
+        elseif v:IsA("BasePart") then
+            v.Material = Enum.Material.SmoothPlastic
+            v.CastShadow = false
+            v.Reflectance = 0
+        elseif v:IsA("PointLight") or v:IsA("SpotLight") or v:IsA("SurfaceLight") then
+            v:Destroy()
+        elseif v:IsA("Highlight") or v:IsA("SelectionBox") or v:IsA("SelectionSphere") then
+            v:Destroy()
+        end
+    end
+
+    -- Tắt animation phụ của NPC (giảm lag)
+    for _,v in ipairs(game:GetDescendants()) do
+        if v:IsA("Animator") or v:IsA("AnimationController") then
+            v:Destroy()
+        end
+    end
+
+    -- Tắt bóng tổng (nếu có)
+    pcall(function()
+        game:GetService("UserSettings"):GetService("UserGameSettings").SavedQualityLevel = Enum.SavedQualitySetting.QualityLevel1
+    end)
+end)
+
 local v14 = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))();
 local v15 = v14:CreateWindow({
     Title = "HNC Hub - Auto Chest",
