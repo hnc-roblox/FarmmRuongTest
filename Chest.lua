@@ -1991,11 +1991,11 @@ function BTPZ(v209)
     task.wait();
     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v209;
 end
-TweenSpeed = 700;
+TweenSpeed = 800;
 function Tween(v211)
     local v212 = (v211.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude;
     local v213 = TweenSpeed;
-    if (v212 >= 350) then
+    if (v212 >= 800) then
         v213 = TweenSpeed;
     end
     local v214 = TweenInfo.new(v212 / v213, Enum.EasingStyle.Linear);
