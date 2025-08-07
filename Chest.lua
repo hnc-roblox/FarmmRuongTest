@@ -2064,7 +2064,7 @@ TweenSpeed = 1000;
 function Tween(v211)
     local v212 = (v211.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude;
     local v213 = TweenSpeed;
-    if (v212 >= 350) then
+    if (v212 >= 999999999) then
         v213 = TweenSpeed;
     end
     local v214 = TweenInfo.new(v212 / v213, Enum.EasingStyle.Linear);
@@ -2438,3 +2438,4 @@ spawn(function()
     end
 
 end);
+
